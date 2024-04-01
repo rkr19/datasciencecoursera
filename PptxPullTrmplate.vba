@@ -15,10 +15,11 @@ Sub ExtractTemplateFromPPTX()
     Set pptPresentation = pptApp.Presentations.Open(pptFilePath)
     
     ' Get the path to the current template
-    templatePath = pptPresentation.Designs(1).Name
+    templatePath = pptPresentation.Designs(1).TemplateName
     
     ' Save the template to a specific folder
-    pptPresentation.Designs(1).SaveAs "C:\Path\To\Save\Template" & templatePath & ".potx" ' Update with your save path
+    pptPresentation.ApplyTemplate templatePath
+    pptPresentation.SaveAs "C:\Path\To\Save\Template\" & templatePath & ".potx" ' Update with your save path
     
     ' Close the PowerPoint presentation without saving changes
     pptPresentation.Close False
