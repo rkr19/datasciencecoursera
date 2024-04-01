@@ -1,6 +1,7 @@
 Sub ExtractTemplateFromPPTX()
     Dim pptApp As Object
     Dim pptPresentation As Object
+    Dim design As Object
     Dim templatePath As String
     
     ' Path to the PowerPoint file
@@ -14,12 +15,15 @@ Sub ExtractTemplateFromPPTX()
     ' Open the PowerPoint file
     Set pptPresentation = pptApp.Presentations.Open(pptFilePath)
     
-    ' Get the path to the current template
-    templatePath = pptPresentation.Designs(1).TemplateName
-    
-    ' Save the template to a specific folder
-    pptPresentation.ApplyTemplate templatePath
-    pptPresentation.SaveAs "C:\Path\To\Save\Template\" & templatePath & ".potx" ' Update with your save path
+    ' Loop through each design in the presentation
+    For Each design In pptPresentation.Designs
+        ' Get the path to the template
+        templatePath = "C:\Path\To\Save\Template\" & design.Name & ".potx" ' Update with your save path
+        
+        ' Save the template
+        pptPresentation.ApplyTemplate design.Name
+        pptPresentation.SaveAs templatePath
+    Next design
     
     ' Close the PowerPoint presentation without saving changes
     pptPresentation.Close False
@@ -29,5 +33,5 @@ Sub ExtractTemplateFromPPTX()
     Set pptPresentation = Nothing
     Set pptApp = Nothing
     
-    MsgBox "Template extracted successfully!"
+    MsgBox "Templates extracted successfully!"
 End Sub
